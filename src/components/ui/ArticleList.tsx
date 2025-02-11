@@ -16,7 +16,18 @@ export default function ArticleList({ articles }: ArticleListProps) {
               <div className="flex items-center gap-2 mb-4">
                 <div className="h-2 w-2 rounded-full bg-blue-500"></div>
                 <span className="text-sm text-gray-500">
-                  {new Date(article.createdAt).toLocaleDateString("ja-JP")}
+                  {/* {new Date(article.createdAt).toLocaleDateString("ja-JP")} */}
+                  <div className="text-sm text-gray-500">
+                    作成日時:{" "}
+                    {new Date(article.createdAt).toLocaleString("ja-JP", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      second: "2-digit",
+                    })}
+                  </div>
                 </span>
               </div>
 
