@@ -1,10 +1,20 @@
 // src/app/page.tsx
+"use client";
+
 import Link from "next/link";
 import ArticleList from "@/components/ui/ArticleList";
 import { getArticles } from "@/lib/articles";
+import { useEffect, useState } from "react";
+import { Article } from "@/lib/articles";
 
 export default function Home() {
-  const articles = getArticles();
+  const [articles, setArticles] = useState<Article[]>([]);
+
+  useEffect(() => {
+    // 記事一覧を取得して状態を更新
+    const loadedArticles = getArticles();
+    setArticles(loadedArticles);
+  }, []); // 空の依存配列で、コンポーネントのマウント時に1回だけ実行
 
   return (
     <main className="min-h-screen bg-gray-50">
