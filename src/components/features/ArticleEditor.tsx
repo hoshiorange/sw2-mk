@@ -3,18 +3,20 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createArticle } from "@/lib/articles";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function ArticleEditor() {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [isPreview, setIsPreview] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title || !content) return;
-
     createArticle(title, content);
-    router.push("/"); // 作成後にトップページに戻る
+    router.push("/");
   };
 
   return (
@@ -38,21 +40,39 @@ export default function ArticleEditor() {
       </div>
 
       <div>
-        <label
-          htmlFor="content"
-          className="block text-sm font-medium text-gray-700 mb-2"
-        >
-          本文
-        </label>
-        <textarea
-          id="content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          rows={10}
-          placeholder="記事の内容を入力"
-          required
-        />
+        <div className="flex justify-between items-center mb-2">
+          <label
+            htmlFor="content"
+            className="block text-sm font-medium text-gray-700"
+          >
+            本文 (Markdown形式で入力できます)
+          </label>
+          <button
+            type="button"
+            onClick={() => setIsPreview(!isPreview)}
+            className="text-sm text-blue-600 hover:text-blue-700"
+          >
+            {isPreview ? "編集に戻る" : "プレビュー"}
+          </button>
+        </div>
+
+        {isPreview ? (
+          <div className="prose prose-slate max-w-none p-4 border border-gray-300 rounded-md bg-gray-50 min-h-[200px]">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {content || "プレビューする内容がありません"}
+            </ReactMarkdown>
+          </div>
+        ) : (
+          <textarea
+            id="content"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            rows={10}
+            placeholder="Markdown形式で記事を入力"
+            required
+          />
+        )}
       </div>
 
       <div className="flex gap-4">
