@@ -10,6 +10,14 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // transpilePackages: ["@uiw/react-md-editor"],
+  // webpack: (config) => {
+  //   config.resolve.alias = {
+  //     ...config.resolve.alias,
+  //     "@uiw/react-md-editor": "@uiw/react-md-editor/dist/index.js",
+  //   };
+  //   return config;
+  // },
 };
 
 export default nextConfig;
