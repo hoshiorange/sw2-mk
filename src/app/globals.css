@@ -19,3 +19,15 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.markdown-body {
+  /* エディタのプレビュー部分のスタイル */
+  ul {
+    list-style: disc !important;
+    padding-left: 2em !important;
+  }
+  ol {
+    list-style: decimal !important;
+    padding-left: 2em !important;
+  }
+}
