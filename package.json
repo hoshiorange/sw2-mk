@@ -9,10 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@bytemd/plugin-breaks": "^1.22.0",
     "@bytemd/plugin-gfm": "^1.22.0",
     "@bytemd/plugin-highlight": "^1.22.0",
     "@bytemd/react": "^1.22.0",
     "@uiw/react-md-editor": "^4.0.5",
+    "github-markdown-css": "^5.8.1",
     "next": "15.1.6",
     "next-auth": "^4.24.11",
     "react": "^19.0.0",

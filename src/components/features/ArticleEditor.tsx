@@ -9,15 +9,17 @@ import { Editor } from "@bytemd/react";
 import gfm from "@bytemd/plugin-gfm";
 import highlight from "@bytemd/plugin-highlight";
 import "bytemd/dist/index.css";
+import breaks from "@bytemd/plugin-breaks"; // 改行用のプラグインを追加
+// import "github-markdown-css"; // GitHubスタイルのCSSを追加
+import "github-markdown-css/github-markdown.css";
 
 // MDEditorの動的インポート
-const MDEditor = dynamic(
-  () => import("@uiw/react-md-editor").then((mod) => mod.default),
-  { ssr: false }
-);
+const MDEditor = dynamic(() => import("@uiw/react-md-editor"), {
+  ssr: false,
+}) as typeof import("@uiw/react-md-editor").default;
 
 // ByteMDのプラグイン設定
-const plugins = [gfm(), highlight()];
+const plugins = [gfm(), breaks(), highlight()];
 
 export default function ArticleEditor() {
   const router = useRouter();
@@ -96,19 +98,21 @@ export default function ArticleEditor() {
         {(selectedEditor === "bytemd" || selectedEditor === "both") && (
           <div className="mb-8">
             <h2 className="text-xl font-semibold mb-4">ByteMD エディタ</h2>
-            <Editor
-              value={content1}
-              plugins={plugins}
-              onChange={(v) => setContent1(v)}
-              locale={{
-                write: "編集",
-                preview: "プレビュー",
-                writeMode: "編集モード",
-                previewMode: "プレビューモード",
-                loading: "読み込み中",
-                error: "エラーが発生しました",
-              }}
-            />
+            <div className="markdown-body">
+              <Editor
+                value={content1}
+                plugins={plugins}
+                onChange={(v) => setContent1(v)}
+                locale={{
+                  write: "編集",
+                  preview: "プレビュー",
+                  // writeMode: "編集モード",
+                  // previewMode: "プレビューモード",
+                  // loading: "読み込み中",
+                  // error: "エラーが発生しました",
+                }}
+              />
+            </div>
           </div>
         )}
 
@@ -116,12 +120,15 @@ export default function ArticleEditor() {
           <div className="mb-8">
             <h2 className="text-xl font-semibold mb-4">React MD Editor</h2>
             <div data-color-mode="light">
+              {/* TODO 箇条書きの点が見えない問題解決する必要あり */}
+              {/* <div className="markdown-body"> */}
               <MDEditor
                 value={content2}
-                onChange={(val) => setContent2(val || "")}
+                onChange={(val: string | undefined) => setContent2(val || "")}
                 height={400}
                 preview="edit"
               />
+              {/* </div> */}
             </div>
           </div>
         )}
