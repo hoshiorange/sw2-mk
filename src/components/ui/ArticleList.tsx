@@ -7,6 +7,11 @@ interface ArticleListProps {
 }
 
 export default function ArticleList({ articles }: ArticleListProps) {
+  // HTMLタグを除去する関数 (正規表現ベース)
+  const stripHtmlTags = (html: string): string => {
+    return html.replace(/<[^>]*>/g, "");
+  };
+
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {articles.map((article) => (
@@ -36,8 +41,17 @@ export default function ArticleList({ articles }: ArticleListProps) {
               </h2>
 
               <p className="text-gray-600 mb-4 flex-grow">
-                {article.content.slice(0, 100)}
-                {article.content.length > 100 ? "..." : ""}
+                {(() => {
+                  // HTMLタグを除去してプレーンテキストを取得
+                  const plainText = stripHtmlTags(article.content);
+                  // 不要な空白文字を整理
+                  const cleanText = plainText.replace(/\s+/g, " ").trim();
+                  // 100文字までに制限して表示
+                  return (
+                    cleanText.slice(0, 100) +
+                    (cleanText.length > 100 ? "..." : "")
+                  );
+                })()}
               </p>
 
               <div className="flex items-center text-sm text-gray-500 mt-auto">
