@@ -2,16 +2,9 @@
 
 import Link from "next/link";
 import { getArticleById } from "@/lib/articles";
-import { use } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 
-export default function ArticlePage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = use(params);
+export default function ArticlePage({ params }: { params: { id: string } }) {
+  const { id } = params;
   const article = getArticleById(id);
 
   if (!article) {
@@ -71,16 +64,10 @@ export default function ArticlePage({
             })}
           </div>
 
-          <div className="prose prose-slate max-w-none">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {article.content}
-            </ReactMarkdown>
-            {/* {article.content.split("\n").map((line, index) => (
-              <p key={index} className="mb-4">
-                {line}
-              </p>
-            ))} */}
-          </div>
+          <div
+            className="prose prose-slate max-w-none tinymce-content"
+            dangerouslySetInnerHTML={{ __html: article.content }}
+          />
         </article>
       </div>
     </main>
