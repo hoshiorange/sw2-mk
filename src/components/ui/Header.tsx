@@ -4,6 +4,7 @@ import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect } from "react";
+import DiscordLogo from "./DiscordLogo";
 
 export default function Header() {
   const { data: session, status } = useSession();
@@ -18,7 +19,7 @@ export default function Header() {
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <Link href="/" className="text-xl font-bold text-gray-800">
-            Wiki System
+            sw2-mk System
           </Link>
 
           <div className="flex items-center gap-4">
@@ -47,9 +48,10 @@ export default function Header() {
               </>
             ) : (
               <button
-                onClick={() => signIn("google")}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                onClick={() => signIn("discord")}
+                className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors flex items-center gap-2"
               >
+                <DiscordLogo size={20} className="inline-block" />
                 ログイン
               </button>
             )}
