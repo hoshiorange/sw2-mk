@@ -1,10 +1,7 @@
-// src/app/api/auth/[...nextauth]/route.ts
-import NextAuth from "next-auth";
+import NextAuth, { AuthOptions } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 
-export const runtime = "nodejs";
-
-export const { handlers, auth, signIn, signOut } = NextAuth({
+export const authOptions: AuthOptions = {
   providers: [
     DiscordProvider({
       clientId: process.env.DISCORD_CLIENT_ID!,
@@ -17,12 +14,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
-  // debug: true,
   callbacks: {
     async jwt({ token, account, profile }) {
       if (account && profile) {
         token.accessToken = account.access_token;
-        token.discordId = profile.id;
+        token.discordId = (profile as { id: string }).id;
       }
       return token;
     },
@@ -37,8 +33,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: {
     signIn: "/login",
   },
-});
+};
 
-// NextAuth v5 では、handlersからHTTPメソッドを直接エクスポートします
-export const GET = handlers.GET;
-export const POST = handlers.POST;
+export default NextAuth(authOptions);
